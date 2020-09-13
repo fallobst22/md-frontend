@@ -1,0 +1,24 @@
+.header {
+    background-image: url(./res/team.jpg);
+    background-size: cover;
+    background-repeat: no-repeat;
+    min-height: 30em;
+    margin-bottom: 0;
+}
+
+.data-frame {
+    border: none;
+    width: 100%;
+    flex: 1;
+}
+
+.impressum {
+    position: fixed;
+    bottom: 0;
+    right: 1%;
+}
+
+.impressum a {
+    text-decoration: none;
+    color: black;
+}
