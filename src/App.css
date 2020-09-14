@@ -12,8 +12,13 @@
     margin-bottom: 0;
 }
 
-.data-frame {
+.middle-split {
+    display: flex;
+    flex-grow: 1;
+}
+
+iframe {
     border: none;
-    width: 100%;
+    height: 100%;
     flex: 1;
 }

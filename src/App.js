@@ -5,6 +5,7 @@ import {KeycloakProvider} from "@react-keycloak/web";
 
 import keycloak from "./keycloak";
 import Footer from "./Footer";
+import Spotify from "./Spotify";
 
 function App() {
     return (
@@ -18,7 +19,10 @@ function App() {
         }}>
             <div className={"content"}>
                 <Jumbotron className={"header"} fluid={true}/>
-                <iframe className={"data-frame"} title={"meissner-dev"} src={"https://meissner-dev.de/MarkusDope"}/>
+                <div className={"middle-split"}>
+                    <iframe className={"data-frame"} title={"meissner-dev"} src={"https://meissner-dev.de/MarkusDope"}/>
+                    <Spotify/>
+                </div>
                 <Footer/>
             </div>
         </KeycloakProvider>
