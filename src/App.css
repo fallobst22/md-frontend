@@ -4,21 +4,10 @@
     flex-direction: column;
 }
 
-.header {
-    background-image: url(./res/team.jpg);
-    background-size: cover;
-    background-repeat: no-repeat;
-    min-height: 30em;
-    margin-bottom: 0;
-}
-
-.middle-split {
-    display: flex;
+.main-content {
     flex-grow: 1;
 }
 
-iframe {
-    border: none;
-    height: 100%;
-    flex: 1;
+a:visited, a:hover {
+    color: inherit !important;
 }

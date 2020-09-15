@@ -8,6 +8,14 @@
     user-select: none;
 }
 
+.footer > * {
+    flex: 1 1 0;
+}
+
+.impressum {
+    text-align: right;
+}
+
 .impressum a {
     text-decoration: none;
     color: white;
@@ -15,4 +23,8 @@
 
 .login {
     cursor: pointer;
+}
+
+.footer a {
+    color: white;
 }

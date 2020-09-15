@@ -2,11 +2,16 @@ import React from 'react';
 
 import './Footer.css'
 import {useKeycloak} from "@react-keycloak/web";
+import {Link} from "react-router-dom";
+import RoleComponent from "./RoleComponent";
 
 function Footer() {
     return (
         <div className={"footer"}>
             <LoginComponent/>
+            <RoleComponent role={"manager"}>
+                <Link className={"text-center"} to={"/import"}>Match importieren</Link>
+            </RoleComponent>
             <div className="impressum">
                 <a href="https://datenschutz.elite12.de/">Impressum/Datenschutzerklärung</a>
             </div>

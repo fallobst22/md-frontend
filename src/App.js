@@ -1,15 +1,19 @@
 import React from 'react';
+import {BrowserRouter as Router, Route, Switch} from "react-router-dom";
 import './App.css';
-import Jumbotron from "react-bootstrap/Jumbotron";
 import {KeycloakProvider} from "@react-keycloak/web";
 
 import keycloak from "./keycloak";
-import Footer from "./Footer";
-import Spotify from "./Spotify";
+import Footer from "./components/Footer";
+import Home from "./views/Home";
+import NoMatch from "./views/NoMatch";
+import 'bootstrap/dist/css/bootstrap.min.css';
+import ImportMatch from "./views/ImportMatch";
+import RoleRoute from "./components/RoleRoute";
 
 function App() {
     return (
-        <KeycloakProvider keycloak={keycloak} initConfig={{
+        <KeycloakProvider keycloak={keycloak} LoadingComponent={<div/>} initConfig={{
             onLoad: 'check-sso',
             promiseType: 'native',
             flow: 'standard',
@@ -17,14 +21,18 @@ function App() {
             checkLoginIframe: false,
             silentCheckSsoRedirectUri: window.location.origin + '/silent-sso.html'
         }}>
-            <div className={"content"}>
-                <Jumbotron className={"header"} fluid={true}/>
-                <div className={"middle-split"}>
-                    <iframe className={"data-frame"} title={"meissner-dev"} src={"https://meissner-dev.de/MarkusDope"}/>
-                    <Spotify/>
+            <Router>
+                <div className={"content"}>
+                    <div className={"main-content"}>
+                        <Switch>
+                            <Route path={"/"} exact component={Home}/>
+                            <RoleRoute role="manager" path={"/import"} component={ImportMatch}/>
+                            <Route component={NoMatch}/>
+                        </Switch>
+                    </div>
+                    <Footer/>
                 </div>
-                <Footer/>
-            </div>
+            </Router>
         </KeycloakProvider>
     );
 }
