@@ -1,13 +1,12 @@
 .header {
-    background-image: url(../res/team.jpg);
-    background-size: cover;
-    background-repeat: no-repeat;
-    min-height: 30em;
-    margin-bottom: 0 !important;
+    background: url(../res/header.png) no-repeat center, rgb(196, 196, 196);
+    background-size: contain;
+    flex: 0 0 15em;
 }
 
 .middle-split {
     display: flex;
+    align-items: stretch;
     flex-grow: 1;
 }
 
@@ -18,8 +17,8 @@ iframe {
 }
 
 .home {
-    width: 100%;
     height: 100%;
     display: flex;
     flex-direction: column;
+    background-color: #424242;
 }

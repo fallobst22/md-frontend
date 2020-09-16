@@ -1,16 +1,16 @@
-import Jumbotron from "react-bootstrap/Jumbotron";
 import Spotify from "../components/Spotify";
 import React from "react";
 
 import './Home.css';
+import Stats from "../components/Stats";
 
 function Home() {
     return (
         <div className={"home"}>
-            <Jumbotron className={"header"} fluid={true}/>
+            <div className={"header"}/>
             <div className={"middle-split"}>
-                <iframe className={"data-frame"} title={"meissner-dev"} src={"https://meissner-dev.de/MarkusDope"}/>
                 <Spotify/>
+                <Stats className={"flex-grow-1"}/>
             </div>
         </div>
     );
