@@ -7,7 +7,7 @@ import keycloak from "./keycloak";
 import Footer from "./components/Footer";
 import Home from "./views/Home";
 import NoMatch from "./views/NoMatch";
-import 'bootstrap/dist/css/bootstrap.min.css';
+import './res/bootstrap.min.css';
 import ImportMatch from "./views/ImportMatch";
 import RoleRoute from "./components/RoleRoute";
 
