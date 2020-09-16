@@ -18,10 +18,17 @@ function WinrateBar(props) {
                 variant="danger"
                 now={(1 - winrate) * 100}
             />
-            <div className={"winrate-label"}>
-                <CustomNumberFormat suffix={"%"}>{winrate * 100}</CustomNumberFormat>
-            </div>
+            <WinrateBarLabel winrate={winrate}/>
         </ProgressBar>
+    );
+}
+
+//If this part is not wrapped in an extra component react will throw a warning, because the parent progressbar sets the isChild property on children.
+function WinrateBarLabel(props) {
+    return (
+        <div className={"winrate-label"}>
+            <CustomNumberFormat suffix={"%"}>{props.winrate * 100}</CustomNumberFormat>
+        </div>
     );
 }
 
