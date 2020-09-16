@@ -7,7 +7,7 @@ import './PlayerStats.css';
 import CustomNumberFormat from "./CustomNumberFormat";
 import WinrateBar from "./WinrateBar";
 
-function PlayerStats() {
+function PlayerStats(props) {
     const [loading, setLoading] = useState(true);
     const [data, setData] = useState();
     useEffect(() => {
@@ -108,6 +108,7 @@ function PlayerStats() {
             highlightOnHover={true}
             progressPending={loading}
             theme={"dark"}
+            className={props.className}
         />
     );
 }
