@@ -1,13 +1,7 @@
 .header {
     background: url(../res/header.png) no-repeat center, rgb(196, 196, 196);
-    background-size: contain;
+    background-size: cover;
     flex: 0 0 15em;
-}
-
-.middle-split {
-    display: flex;
-    align-items: stretch;
-    flex-grow: 1;
 }
 
 iframe {
@@ -20,4 +14,6 @@ iframe {
     height: 100%;
     display: flex;
     flex-direction: column;
+    overflow-x: hidden;
+    overflow-y: auto;
 }

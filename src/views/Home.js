@@ -1,4 +1,3 @@
-import Spotify from "../components/Spotify";
 import React from "react";
 
 import './Home.css';
@@ -8,10 +7,7 @@ function Home() {
     return (
         <div className={"home"}>
             <div className={"header"}/>
-            <div className={"middle-split"}>
-                <Spotify/>
-                <Stats className={"flex-grow-1"}/>
-            </div>
+            <Stats className={"flex-grow-1"}/>
         </div>
     );
 }

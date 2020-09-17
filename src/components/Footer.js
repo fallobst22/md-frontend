@@ -12,9 +12,9 @@ function Footer() {
             <RoleComponent role={"manager"}>
                 <Link className={"text-center"} to={"/import"}>Match importieren</Link>
             </RoleComponent>
-            <a className={"text-center"} href={"https://meissner-dev.de/MarkusDope"}>Old Stats</a>
+            <a className={"text-center d-none d-sm-block"} href={"https://meissner-dev.de/MarkusDope"}>Old Stats</a>
             <div className="impressum">
-                <a href="https://datenschutz.elite12.de/">Impressum/Datenschutzerklärung</a>
+                <a href="https://datenschutz.elite12.de/">Impressum<span className={"d-none d-lg-inline"}> / Datenschutzerklärung</span></a>
             </div>
         </div>
     );
@@ -27,7 +27,7 @@ function LoginComponent() {
     if (keycloak.authenticated) {
         return (
             <div>
-                Eingeloggt als {keycloak.idTokenParsed.preferred_username}
+                <span className={"d-none d-sm-inline"}>Eingeloggt als </span>{keycloak.idTokenParsed.preferred_username}
             </div>
         );
     } else {

@@ -43,8 +43,34 @@ createTheme('custom-dark', {
     striped: {
         "default": 'rgba(255, 255, 255, .1)',
         text: '#FFFFFF'
+    },
+    rows: {
+        denseStyle: {
+            minHeight: '300px'
+        }
     }
 });
+
+const customStyles = {
+    headRow: {
+        denseStyle: {
+            minHeight: '3rem'
+        }
+    },
+    headCells: {
+        style: {
+            fontSize: '0.9rem'
+        }
+    },
+    rows: {
+        style: {
+            fontSize: 'initial'
+        },
+        denseStyle: {
+            minHeight: '2rem'
+        }
+    }
+}
 
 function PlayerStats(props) {
     const [loading, setLoading] = useState(true);
@@ -70,6 +96,7 @@ function PlayerStats(props) {
             name: "Name",
             selector: "playerName",
             sortable: true,
+            grow: 1.5
         },
         {
             name: "WinRate",
@@ -147,6 +174,7 @@ function PlayerStats(props) {
             columns={columns}
             data={data}
             keyField={"name"}
+            responsive={true}
             striped={true}
             dense={true}
             defaultSortField={"playerName"}
@@ -154,6 +182,7 @@ function PlayerStats(props) {
             progressPending={loading}
             theme={"custom-dark"}
             className={props.className}
+            customStyles={customStyles}
         />
     );
 }

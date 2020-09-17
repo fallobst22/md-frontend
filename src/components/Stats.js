@@ -5,8 +5,8 @@ import Records from "./Records";
 function Stats(props) {
     return (
         <div className={props.className}>
-            <PlayerStats className={"mb-3"}/>
             <Records/>
+            <PlayerStats className={"mb-3"}/>
         </div>
     );
 }

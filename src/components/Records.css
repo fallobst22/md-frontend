@@ -1,11 +1,50 @@
+.record-slider {
+    margin: 2em 2.5em;
+}
+
+@media screen and  (max-width: 420px) {
+    .record-slider {
+        margin: 2em 0;
+    }
+}
+
+.record-slider .slick-dots li button:before {
+    color: white !important;
+}
+
 .recordValue {
     font-weight: bold;
 }
 
-.record-deck {
-    justify-content: space-around;
+.record-card {
+    height: 100%;
+    margin: 0 1em;
 }
 
-.record-card {
-    max-width: 25em;
+.record-slider .slick-slide {
+    outline: none !important;
+}
+
+.slick-dots {
+    bottom: -2rem !important;
+}
+
+.slick-dots li {
+    width: 1rem !important;
+    height: 1rem !important;
+
+}
+
+.slick-dots li button:before {
+    font-size: 0.5rem !important;
+    line-height: 1rem !important;
+}
+
+.slick-prev, .slick-next {
+    width: 1rem !important;
+    height: 1rem !important;
+}
+
+.slick-prev:before, .slick-next:before {
+    font-size: 1.5rem !important;
 }

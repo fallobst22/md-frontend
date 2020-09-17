@@ -1,11 +1,16 @@
 import React, {useEffect, useState} from "react";
-import CardDeck from 'react-bootstrap/CardDeck';
 
 import './Records.css';
 import Card from "react-bootstrap/Card";
 import CustomNumberFormat from "./CustomNumberFormat";
 
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+import Spinner from "react-bootstrap/Spinner";
+
 const titlemappings = {
+    loading: "Loading...",
     kills: "Highest Kills",
     cs: "Highest CS",
     kda: "Highest KDA",
@@ -25,8 +30,9 @@ const lanemappings = {
 }
 
 function Records(props) {
-    const [loading, setLoading] = useState(true);
-    const [data, setData] = useState();
+    const [data, setData] = useState({
+        'Loading...': []
+    });
 
     useEffect(() => {
         fetch("/api/stats/records")
@@ -40,23 +46,45 @@ function Records(props) {
             })
             .catch(reason => {
                 alert("Error loading Records: " + reason)
-            })
-            .finally(() => setLoading(false));
+            });
     }, []);
 
-    if (loading) return null;
+    const breakpoints = [
+        {
+            breakpoint: 1800,
+            settings: {
+                slidesToShow: 4,
+                slidesToScroll: 4,
+            }
+        },
+        {
+            breakpoint: 1450,
+            settings: {
+                slidesToShow: 3,
+                slidesToScroll: 3
+            }
+        },
+        {
+            breakpoint: 1100,
+            settings: {
+                slidesToShow: 2,
+                slidesToScroll: 2
+            }
+        },
+        {
+            breakpoint: 700,
+            settings: {
+                slidesToShow: 1,
+                slidesToScroll: 1
+            }
+        }
+    ]
 
-    let rows = [];
-    let entries = Object.entries(data);
-
-    while (entries.length) {
-        rows.push(entries.splice(0, 4));
-    }
-
-    return rows.map((row, index) =>
-        <CardDeck key={index} className={"record-deck m-1 mb-4 mt-4"}>
-            {row.map(record => <Record key={record[0]} data={record}/>)}
-        </CardDeck>
+    return (
+        <Slider autoplay autoplaySpeed={5000} className={"record-slider"} dots infinite={Object.keys(data).length >= 5}
+                slidesToShow={5} slidesToScroll={5} responsive={breakpoints} speed={1000}>
+            {Object.entries(data).map(record => <Record key={record[0]} data={record}/>)}
+        </Slider>
     );
 }
 
@@ -66,9 +94,16 @@ function Record(props) {
     return (
         <Card className={"record-card"}>
             <Card.Header>{titlemappings.hasOwnProperty(key) ? titlemappings[key] : key}</Card.Header>
-            <Card.Body>
-                {record.map(data => <RecordEntry key={data.matchId + data.player} {...data} />)}
+            <Card.Body className={record.length ? "" : "text-center"}>
+                {record.length ?
+                    record.map(data => <RecordEntry key={data.matchId + data.player} {...data} />)
+                    :
+                    <Spinner animation="border" role="status">
+                        <span className="sr-only">Loading...</span>
+                    </Spinner>
+                }
             </Card.Body>
+            <Card.Footer/>
         </Card>
     );
 }
@@ -85,11 +120,11 @@ function RecordEntry(props) {
     ;
 
     return (
-        <div>
+        <span>
             [{lanemappings[props.lane] || props.lane}]&nbsp;
             {props.player} auf {props.champion}:&nbsp;
             {value}
-        </div>
+        </span>
     );
 }
 
