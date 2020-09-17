@@ -38,7 +38,7 @@ function Records(props) {
                 setData(res.records);
             })
             .catch(reason => {
-                alert("Error loading Player Stats: " + reason)
+                alert("Error loading Records: " + reason)
             })
             .finally(() => setLoading(false));
     }, []);
