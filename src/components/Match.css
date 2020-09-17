@@ -9,7 +9,8 @@
 }
 
 .team {
-    border: solid 4px;
+    border: solid 4px white;
+    color: black;
 }
 
 .blueTeam {
