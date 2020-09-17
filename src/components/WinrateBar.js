@@ -6,7 +6,7 @@ import './WinrateBar.css';
 
 function WinrateBar(props) {
     const data = props.data;
-    const winrate = data.wins / (data.wins + data.loses);
+    const winrate = data.wins / (data.wins + data.losses);
 
     return (
         <ProgressBar className={"winrate-bar"} title={(winrate * 100).toFixed(2) + '%'}>

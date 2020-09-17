@@ -73,9 +73,9 @@ function PlayerStats(props) {
         },
         {
             name: "WinRate",
-            selector: (data) => data.wins / (data.wins + data.loses),
+            selector: (data) => data.wins / (data.wins + data.losses),
             sortable: true,
-            sortFunction: (e1, e2) => (e1.wins / (e1.wins + e1.loses)) - (e2.wins / (e2.wins + e2.loses)),
+            sortFunction: (e1, e2) => (e1.wins / (e1.wins + e1.losses)) - (e2.wins / (e2.wins + e2.losses)),
             cell: (data) => <WinrateBar data={data}/>
         },
         {
@@ -84,8 +84,8 @@ function PlayerStats(props) {
             sortable: true
         },
         {
-            name: "Loses",
-            selector: "loses",
+            name: "Losses",
+            selector: "losses",
             sortable: true,
         },
         {
