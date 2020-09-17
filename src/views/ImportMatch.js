@@ -84,16 +84,21 @@ function ImportStep2() {
         fetch("/api/import/" + matchId, {
             headers: headers
         }).then((res) => {
-            if (!res.ok) throw Error(res.statusText);
+            if (res.status === 422) {
+                res.json().then(value => alert("Error: " + value.message));
+                throw Error();
+            } else if (!res.ok) throw Error(res.statusText);
             return res;
         }).then(res => res.json())
             .then(res => {
                 if (res.hasOwnProperty('playerMapping')) setPlayerMappings(res.playerMapping);
                 setMatchData(res);
-
             })
             .catch(reason => {
-                alert("Error loading Match Data: " + reason)
+                if (reason.message) {
+                    alert("Error loading Match Data: " + reason)
+                }
+                history.push("/import");
             })
         // We dont want to refetch the match data just because our authentication Token changed, so the hook depends on the token but we dont include it in the dependency list
         // eslint-disable-next-line react-hooks/exhaustive-deps
