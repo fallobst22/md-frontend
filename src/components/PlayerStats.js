@@ -1,11 +1,50 @@
 import React, {useEffect, useState} from "react";
 
 import '../views/Home.css';
-import DataTable from "react-data-table-component";
+import DataTable, {createTheme} from "react-data-table-component";
 
 import './PlayerStats.css';
 import CustomNumberFormat from "./CustomNumberFormat";
 import WinrateBar from "./WinrateBar";
+
+createTheme('custom-dark', {
+    text: {
+        primary: '#FFFFFF',
+        secondary: 'rgba(255, 255, 255, 0.7)',
+        disabled: 'rgba(0,0,0,.12)'
+    },
+    background: {
+        "default": '#222222'
+    },
+    context: {
+        background: '#E91E63',
+        text: '#FFFFFF'
+    },
+    divider: {
+        "default": 'rgba(81, 81, 81, 1)'
+    },
+    button: {
+        "default": '#FFFFFF',
+        focus: 'rgba(255, 255, 255, .54)',
+        hover: 'rgba(255, 255, 255, .12)',
+        disabled: 'rgba(255, 255, 255, .18)'
+    },
+    sortFocus: {
+        "default": 'rgba(255, 255, 255, .54)'
+    },
+    selected: {
+        "default": 'rgba(0, 0, 0, .7)',
+        text: '#FFFFFF'
+    },
+    highlightOnHover: {
+        "default": 'rgba(0, 0, 0, .7)',
+        text: '#FFFFFF'
+    },
+    striped: {
+        "default": 'rgba(255, 255, 255, .1)',
+        text: '#FFFFFF'
+    }
+});
 
 function PlayerStats(props) {
     const [loading, setLoading] = useState(true);
@@ -107,7 +146,7 @@ function PlayerStats(props) {
             defaultSortField={"playerName"}
             highlightOnHover={true}
             progressPending={loading}
-            theme={"dark"}
+            theme={"custom-dark"}
             className={props.className}
         />
     );
