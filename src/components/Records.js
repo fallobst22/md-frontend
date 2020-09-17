@@ -3,6 +3,7 @@ import CardDeck from 'react-bootstrap/CardDeck';
 
 import './Records.css';
 import Card from "react-bootstrap/Card";
+import CustomNumberFormat from "./CustomNumberFormat";
 
 const titlemappings = {
     kills: "Highest Kills",
@@ -72,9 +73,22 @@ function Record(props) {
 }
 
 function RecordEntry(props) {
+
+    const value =
+        <span className={"recordValue"}>
+            {isNaN(props.value) ?
+                props.value :
+                <CustomNumberFormat>{props.value}</CustomNumberFormat>
+            }
+        </span>
+    ;
+
     return (
-        <div>[{lanemappings[props.lane] || props.lane}] {props.player} auf {props.champion}: <span
-            className={"recordValue"}>{props.value}</span></div>
+        <div>
+            [{lanemappings[props.lane] || props.lane}]&nbsp;
+            {props.player} auf {props.champion}:&nbsp;
+            {value}
+        </div>
     );
 }
 
