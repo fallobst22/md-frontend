@@ -133,6 +133,12 @@ function PlayerStats(props) {
             sortable: true,
             format: (data) => <CustomNumberFormat>{data.cs / (data.gameDuration / 60)}</CustomNumberFormat>,
         },
+        {
+            name: "VS per Min",
+            selector: (data) => data.visionScore / (data.gameDuration / 60),
+            sortable: true,
+            format: (data) => <CustomNumberFormat>{data.visionScore / (data.gameDuration / 60)}</CustomNumberFormat>,
+        },
     ]
 
     return (

@@ -1,3 +1,11 @@
 .recordValue {
     font-weight: bold;
 }
+
+.record-deck {
+    justify-content: space-around;
+}
+
+.record-card {
+    max-width: 25em;
+}

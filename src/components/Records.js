@@ -11,7 +11,8 @@ const titlemappings = {
     kda: "Highest KDA",
     gold: "Highest Gold",
     assists: "Highest Assists",
-    deaths: "Highest Deaths"
+    deaths: "Highest Deaths",
+    visionScore: "Highest Vision Score",
 }
 
 const lanemappings = {
@@ -53,7 +54,7 @@ function Records(props) {
     }
 
     return rows.map((row, index) =>
-        <CardDeck key={index} className={"m-1 mb-4"}>
+        <CardDeck key={index} className={"record-deck m-1 mb-4 mt-4"}>
             {row.map(record => <Record key={record[0]} data={record}/>)}
         </CardDeck>
     );
@@ -63,7 +64,7 @@ function Record(props) {
     const [key, record] = props.data;
 
     return (
-        <Card>
+        <Card className={"record-card"}>
             <Card.Header>{titlemappings.hasOwnProperty(key) ? titlemappings[key] : key}</Card.Header>
             <Card.Body>
                 {record.map(data => <RecordEntry key={data.matchId + data.player} {...data} />)}
