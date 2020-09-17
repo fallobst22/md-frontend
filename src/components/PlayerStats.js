@@ -161,10 +161,10 @@ function PlayerStats(props) {
             format: (data) => <CustomNumberFormat>{data.cs / (data.gameDuration / 60)}</CustomNumberFormat>,
         },
         {
-            name: "VS per Min",
-            selector: (data) => data.visionScore / (data.gameDuration / 60),
+            name: "VS / Game",
+            selector: (data) => data.visionScore / (data.wins + data.losses),
             sortable: true,
-            format: (data) => <CustomNumberFormat>{data.visionScore / (data.gameDuration / 60)}</CustomNumberFormat>,
+            format: (data) => <CustomNumberFormat>{data.visionScore / (data.wins + data.losses)}</CustomNumberFormat>,
         },
     ]
 
