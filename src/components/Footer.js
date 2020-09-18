@@ -12,7 +12,6 @@ function Footer() {
             <RoleComponent role={"manager"}>
                 <Link className={"text-center"} to={"/import"}>Match importieren</Link>
             </RoleComponent>
-            <a className={"text-center d-none d-sm-block"} href={"https://meissner-dev.de/MarkusDope"}>Old Stats</a>
             <div className="impressum">
                 <a href="https://datenschutz.elite12.de/">Impressum<span className={"d-none d-lg-inline"}> / Datenschutzerklärung</span></a>
             </div>
