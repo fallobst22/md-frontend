@@ -16,15 +16,11 @@ function MatchView(props) {
     const [keycloak] = useKeycloak();
 
     useEffect(() => {
-        let headers = new Headers();
-        headers.append("Authorization", "Bearer " + keycloak.token);
-
-        fetch("/api/match/" + id, {
-            headers: headers
-        }).then((res) => {
-            if (!res.ok) throw Error(res.statusText);
-            return res;
-        })
+        fetch("/api/match/" + id)
+            .then((res) => {
+                if (!res.ok) throw Error(res.statusText);
+                return res;
+            })
             .then(res => res.json())
             .then(res => {
                 setData(res);

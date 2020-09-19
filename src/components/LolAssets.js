@@ -21,10 +21,16 @@ function SummonerSpellImage(props) {
 function ItemImage(props) {
     const {itemId, ...imgprops} = props;
 
-    return (
-        <img className={"itemImage"} src={"/api/static/item/image/" + itemId} {...imgprops}
-             alt={"summoner-spell-image-" + itemId}/>
-    );
+    if (itemId) {
+        return (
+            <img className={"itemImage"} src={"/api/static/item/image/" + itemId} {...imgprops}
+                 alt={"summoner-spell-image-" + itemId}/>
+        );
+    } else {
+        return (
+            <div className={"d-inline-block itemImage item-empty align-middle"}/>
+        );
+    }
 }
 
 export {ChampionImage, SummonerSpellImage, ItemImage};

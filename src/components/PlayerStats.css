@@ -1,0 +1,95 @@
+.playerDetails {
+    padding: 1rem;
+    display: flex;
+    justify-content: center;
+}
+
+.matchHistory {
+    margin: 2rem 0;
+}
+
+.matchHistoryEntry {
+    height: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    min-height: 5em;
+    padding-left: 0 !important;
+    cursor: pointer;
+}
+
+.matchHistoryEntry:last-child {
+    border-bottom: 1px solid !important;
+}
+
+.resultIndicator {
+    align-self: stretch;
+    width: 1rem;
+}
+
+.resultIndicator-win {
+    background-color: #28cf28;
+}
+
+.resultIndicator-loss {
+    background-color: #cf2828;
+}
+
+.champion {
+    display: flex;
+    margin: 0 1rem;
+}
+
+.summonerSpells {
+    display: flex;
+    flex-direction: column;
+}
+
+.championName {
+    margin: 0 1rem;
+    width: 8em;
+}
+
+.matchTime {
+    text-align: right;
+}
+
+.gold {
+    margin: 0 1rem;
+    min-width: 2em;
+}
+
+.matchHistoryEntry .kda {
+    margin: 0 1rem;
+    min-width: 4em;
+    text-align: right;
+}
+
+.matchHistoryEntry .items {
+    margin: 0 1rem;
+    text-align: center;
+    width: calc(7 * 2.5rem);
+}
+
+.matchHistoryEntry .items .itemImage {
+    width: 2.5rem;
+    height: 2.5rem;
+}
+
+.matchHistoryEntry .items .item-empty {
+    border: solid 1px black;
+    background-color: #3b3b3b;
+}
+
+.matchHistoryContainer {
+    position: sticky;
+    right: 0;
+    width: 100vw !important;
+    margin: 0 !important;
+}
+
+.rdt_ExpanderRow {
+    display: flex;
+    justify-content: center;
+}

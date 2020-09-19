@@ -6,6 +6,13 @@ import DataTable, {createTheme} from "react-data-table-component";
 import './PlayerStats.css';
 import CustomNumberFormat from "./CustomNumberFormat";
 import WinrateBar from "./WinrateBar";
+import Spinner from "react-bootstrap/Spinner";
+import {Col, Row} from "react-bootstrap";
+import Container from "react-bootstrap/Container";
+import {ChampionImage, ItemImage, SummonerSpellImage} from "./LolAssets";
+import Moment from "react-moment";
+import moment from "moment";
+import {useHistory} from "react-router";
 
 createTheme('custom-dark', {
     text: {
@@ -25,8 +32,8 @@ createTheme('custom-dark', {
     },
     button: {
         "default": '#FFFFFF',
-        focus: 'rgba(255, 255, 255, .54)',
-        hover: 'rgba(255, 255, 255, .12)',
+        focus: 'inherit',
+        hover: 'inherit',
         disabled: 'rgba(255, 255, 255, .18)'
     },
     sortFocus: {
@@ -72,9 +79,87 @@ const customStyles = {
     }
 }
 
+const columns = [
+    {
+        name: "Name",
+        selector: "playerName",
+        sortable: true,
+        grow: 1.5
+    },
+    {
+        name: "WinRate",
+        selector: (data) => data.wins / (data.wins + data.losses),
+        sortable: true,
+        sortFunction: (e1, e2) => (e1.wins / (e1.wins + e1.losses)) - (e2.wins / (e2.wins + e2.losses)),
+        cell: (data) => <WinrateBar data={data}/>
+    },
+    {
+        name: "Wins",
+        selector: "wins",
+        sortable: true
+    },
+    {
+        name: "Losses",
+        selector: "losses",
+        sortable: true,
+    },
+    {
+        name: "Kills",
+        selector: "kills",
+        sortable: true,
+    },
+    {
+        name: "Deaths",
+        selector: "deaths",
+        sortable: true,
+    },
+    {
+        name: "Assists",
+        selector: "assists",
+        sortable: true,
+    },
+    {
+        name: "KDA",
+        selector: (data) => ((data.kills + data.assists) / data.deaths),
+        format: (data) => <CustomNumberFormat>{(data.kills + data.assists) / data.deaths}</CustomNumberFormat>,
+        sortable: true
+    },
+    {
+        name: "Total Damage",
+        selector: 'damage',
+        sortable: true,
+        format: (data) => <CustomNumberFormat>{data.damage}</CustomNumberFormat>,
+    },
+    {
+        name: "DMG per Min",
+        selector: (data) => data.damage / (data.gameDuration / 60),
+        sortable: true,
+        format: (data) => <CustomNumberFormat>{data.damage / (data.gameDuration / 60)}</CustomNumberFormat>,
+    },
+    {
+        name: "Gold per Min",
+        selector: (data) => data.gold / (data.gameDuration / 60),
+        sortable: true,
+        format: (data) => <CustomNumberFormat>{data.gold / (data.gameDuration / 60)}</CustomNumberFormat>,
+    },
+    {
+        name: "CS per Min",
+        selector: (data) => data.cs / (data.gameDuration / 60),
+        sortable: true,
+        format: (data) => <CustomNumberFormat>{data.cs / (data.gameDuration / 60)}</CustomNumberFormat>,
+    },
+    {
+        name: "VS / Game",
+        selector: (data) => data.visionScore / (data.wins + data.losses),
+        sortable: true,
+        format: (data) => <CustomNumberFormat>{data.visionScore / (data.wins + data.losses)}</CustomNumberFormat>,
+    },
+]
+
 function PlayerStats(props) {
     const [loading, setLoading] = useState(true);
     const [data, setData] = useState();
+
     useEffect(() => {
         fetch("/api/stats/player")
             .then((res) => {
@@ -91,83 +176,6 @@ function PlayerStats(props) {
             .finally(() => setLoading(false));
     }, []);
 
-    const columns = [
-        {
-            name: "Name",
-            selector: "playerName",
-            sortable: true,
-            grow: 1.5
-        },
-        {
-            name: "WinRate",
-            selector: (data) => data.wins / (data.wins + data.losses),
-            sortable: true,
-            sortFunction: (e1, e2) => (e1.wins / (e1.wins + e1.losses)) - (e2.wins / (e2.wins + e2.losses)),
-            cell: (data) => <WinrateBar data={data}/>
-        },
-        {
-            name: "Wins",
-            selector: "wins",
-            sortable: true
-        },
-        {
-            name: "Losses",
-            selector: "losses",
-            sortable: true,
-        },
-        {
-            name: "Kills",
-            selector: "kills",
-            sortable: true,
-        },
-        {
-            name: "Deaths",
-            selector: "deaths",
-            sortable: true,
-        },
-        {
-            name: "Assists",
-            selector: "assists",
-            sortable: true,
-        },
-        {
-            name: "KDA",
-            selector: (data) => ((data.kills + data.assists) / data.deaths),
-            format: (data) => <CustomNumberFormat>{(data.kills + data.assists) / data.deaths}</CustomNumberFormat>,
-            sortable: true
-        },
-        {
-            name: "Total Damage",
-            selector: 'damage',
-            sortable: true,
-            format: (data) => <CustomNumberFormat>{data.damage}</CustomNumberFormat>,
-        },
-        {
-            name: "DMG per Min",
-            selector: (data) => data.damage / (data.gameDuration / 60),
-            sortable: true,
-            format: (data) => <CustomNumberFormat>{data.damage / (data.gameDuration / 60)}</CustomNumberFormat>,
-        },
-        {
-            name: "Gold per Min",
-            selector: (data) => data.gold / (data.gameDuration / 60),
-            sortable: true,
-            format: (data) => <CustomNumberFormat>{data.gold / (data.gameDuration / 60)}</CustomNumberFormat>,
-        },
-        {
-            name: "CS per Min",
-            selector: (data) => data.cs / (data.gameDuration / 60),
-            sortable: true,
-            format: (data) => <CustomNumberFormat>{data.cs / (data.gameDuration / 60)}</CustomNumberFormat>,
-        },
-        {
-            name: "VS / Game",
-            selector: (data) => data.visionScore / (data.wins + data.losses),
-            sortable: true,
-            format: (data) => <CustomNumberFormat>{data.visionScore / (data.wins + data.losses)}</CustomNumberFormat>,
-        },
-    ]
-
     return (
         <DataTable
             title={"Player Stats"}
@@ -177,13 +185,103 @@ function PlayerStats(props) {
             responsive={true}
             striped={true}
             dense={true}
+            persistTableHead={true}
             defaultSortField={"playerName"}
             highlightOnHover={true}
             progressPending={loading}
             theme={"custom-dark"}
             className={props.className}
             customStyles={customStyles}
+            expandableRows
+            expandableRowsComponent={<PlayerDetails/>}
         />
+    );
+}
+
+function PlayerDetails(props) {
+    const [data, setData] = useState();
+
+    useEffect(() => {
+        fetch("/api/match/player/" + props.data.playerName)
+            .then((res) => {
+                if (!res.ok) throw Error(res.statusText);
+                return res;
+            })
+            .then(res => res.json())
+            .then(res => {
+                setData(res);
+            })
+            .catch(reason => {
+                alert("Error loading Player Matches: " + reason)
+            })
+    }, [props.data.playerName]);
+
+    if (data === undefined) {
+        return (
+            <div className={"playerDetails"}>
+                <Spinner animation="border" role="status">
+                    <span className="sr-only">Loading...</span>
+                </Spinner>
+            </div>
+        );
+    }
+
+    return (
+        <Container fluid className={"matchHistoryContainer"}>
+            <Container>
+                <Row className={"matchHistory"}>
+                    {data.map((match => <PlayerMatchEntry key={match.matchId} data={match}/>))}
+                </Row>
+            </Container>
+        </Container>
+    );
+}
+
+function PlayerMatchEntry(props) {
+    const data = props.data;
+    const history = useHistory();
+
+    let itemSlots = new Array(7);
+    itemSlots.fill(undefined);
+
+    data.player.items.forEach(((value, index) => {
+        if (index === data.player.items.length - 1) itemSlots[6] = value;
+        else itemSlots[index] = value;
+    }));
+
+    const onClick = () => {
+        history.push("/match/" + data.matchId);
+    }
+
+
+    return (
+        <Col xs={12} onClick={onClick} className={"matchHistoryEntry bg-secondary border border-light border-bottom-0"}>
+            <div className={"resultIndicator resultIndicator-" + (data.win ? 'win' : 'loss')}/>
+            <div className={"champion"}>
+                <ChampionImage championId={data.player.championId}/>
+                <div className={"summonerSpells"}>
+                    <SummonerSpellImage className={"summonerSpell"} spellId={data.player.summonerSpellDId}/>
+                    <SummonerSpellImage className={"summonerSpell"} spellId={data.player.summonerSpellFId}/>
+                </div>
+            </div>
+            <div className={"championName"}>
+                {data.champion}
+            </div>
+            <div className={"flex-grow-1"}/>
+            <div className={"items"}>
+                {itemSlots.map((item, slot) => <ItemImage key={slot} itemId={item}/>)}
+            </div>
+            <div className={"kda"}>
+                {data.player.stats.kills}/{data.player.stats.deaths}/{data.player.stats.assists}
+            </div>
+            <div className={"gold"}>
+                <CustomNumberFormat>{data.player.stats.goldEarned}</CustomNumberFormat>
+            </div>
+            <div className={"matchTime"}>
+                <div>{<Moment format="DD.MM.YYYY HH:mm">{data.matchCreationTime}</Moment>}</div>
+                <div>{moment.duration(data.matchDuration).format("m:ss", {trim: false})}</div>
+            </div>
+        </Col>
     );
 }
 
