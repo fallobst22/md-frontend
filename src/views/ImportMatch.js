@@ -113,7 +113,7 @@ function ImportStep2() {
     }
 
     const importMatch = () => {
-        const participantIds = data.blueTeam.map(participant => participant.participantId).concat(data.redTeam.map(participant => participant.participantId));
+        const participantIds = data.match.participants.map(participant => participant.participantId);
         if (!participantIds.map(id => playerMappings.hasOwnProperty(id)).reduce((previousValue, currentValue) => previousValue && currentValue)) {
             return alert("Bitte alle Spielernamen ausfüllen");
         }
