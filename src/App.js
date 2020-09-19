@@ -10,6 +10,7 @@ import NoMatch from "./views/NoMatch";
 import './res/bootstrap.min.css';
 import ImportMatch from "./views/ImportMatch";
 import RoleRoute from "./components/RoleRoute";
+import MatchView from "./views/MatchView";
 
 function App() {
     return (
@@ -26,6 +27,7 @@ function App() {
                     <div className={"main-content"}>
                         <Switch>
                             <Route path={"/"} exact component={Home}/>
+                            <Route path={"/match/:id"} component={MatchView}/>
                             <RoleRoute role="manager" path={"/import"} component={ImportMatch}/>
                             <Route component={NoMatch}/>
                         </Switch>

@@ -1,0 +1,7 @@
+.match-container {
+    background-color: black;
+    background-image: url(../res/img.jpg);
+    background-size: contain;
+    height: 100%;
+    padding: 1px; /* To prevent margin collapsing because css is stupid */
+}

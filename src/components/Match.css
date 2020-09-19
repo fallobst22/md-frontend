@@ -1,11 +1,12 @@
 .championImage {
-    width: 50px;
-    height: 50px;
+    width: 3rem;
+    height: 3rem;
 }
 
 .kda {
     margin: auto 0;
     text-align: right;
+    min-width: 6em;
 }
 
 .team {
@@ -97,4 +98,87 @@
 
 .react-autosuggest__suggestion--highlighted {
     background-color: #ddd;
+}
+
+.summonerSpell {
+    width: 1.5rem;
+    height: 1.5rem;
+}
+
+.championSpellContainer img {
+    display: block;
+}
+
+.championSpellContainer {
+    display: flex;
+    align-items: center;
+    padding: 0.2rem 0;
+}
+
+.redTeam .championSpellContainer {
+    flex-direction: row-reverse;
+}
+
+.team-result {
+    font-size: 1.4rem;
+    text-align: center;
+}
+
+.team-result-win {
+    color: #28cf28;
+}
+
+.team-result-loss {
+    color: #cf2828;
+}
+
+.item-container {
+    display: grid;
+    grid-template-columns: repeat(3, auto);
+    grid-template-rows: auto auto;
+}
+
+.itemImage {
+    width: 1.5em;
+}
+
+.redTeam .playerName {
+    justify-content: flex-end;
+}
+
+.playerName {
+    display: flex;
+    align-items: center;
+    font-weight: bold;
+    white-space: nowrap;
+}
+
+.trinket-container {
+    margin: 0 0.4rem;
+}
+
+.inventory-container {
+    flex-grow: 0;
+    display: flex;
+    align-items: center;
+}
+
+.redTeam .inventory-container {
+    flex-direction: row-reverse;
+}
+
+.bans {
+    padding: 0 !important;
+    display: flex;
+    justify-content: space-between;
+}
+
+.bans .championImage {
+    width: 1.5em;
+    height: 1.5em;
+}
+
+.player-stats {
+    font-size: 0.75rem;
+    flex-grow: 0 !important;
 }

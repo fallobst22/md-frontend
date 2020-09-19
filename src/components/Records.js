@@ -8,6 +8,7 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Spinner from "react-bootstrap/Spinner";
+import MatchLink from "./MatchLink";
 
 const titlemappings = {
     loading: "Loading...",
@@ -120,11 +121,11 @@ function RecordEntry(props) {
     ;
 
     return (
-        <span>
+        <MatchLink id={props.matchId} className={"d-block text-white"}>
             [{lanemappings[props.lane] || props.lane}]&nbsp;
             {props.player} auf {props.champion}:&nbsp;
             {value}
-        </span>
+        </MatchLink>
     );
 }
 

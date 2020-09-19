@@ -7,6 +7,8 @@ import {Route, Switch, useHistory, useParams} from "react-router";
 import NoMatch from "./NoMatch";
 import {useKeycloak} from "@react-keycloak/web";
 import Match from "../components/Match";
+import Moment from "react-moment";
+import moment from "moment";
 
 function ImportMatch() {
     return (
@@ -74,7 +76,7 @@ function ImportStep2() {
     const history = useHistory();
     const [keycloak] = useKeycloak();
 
-    const [matchData, setMatchData] = useState(null);
+    const [data, setData] = useState(null);
     const [playerMappings, setPlayerMappings] = useState({});
 
     useEffect(() => {
@@ -92,7 +94,7 @@ function ImportStep2() {
         }).then(res => res.json())
             .then(res => {
                 if (res.hasOwnProperty('playerMapping')) setPlayerMappings(res.playerMapping);
-                setMatchData(res);
+                setData(res);
             })
             .catch(reason => {
                 if (reason.message) {
@@ -111,7 +113,7 @@ function ImportStep2() {
     }
 
     const importMatch = () => {
-        const participantIds = matchData.blueTeam.map(participant => participant.participantId).concat(matchData.redTeam.map(participant => participant.participantId));
+        const participantIds = data.blueTeam.map(participant => participant.participantId).concat(data.redTeam.map(participant => participant.participantId));
         if (!participantIds.map(id => playerMappings.hasOwnProperty(id)).reduce((previousValue, currentValue) => previousValue && currentValue)) {
             return alert("Bitte alle Spielernamen ausfüllen");
         }
@@ -147,16 +149,21 @@ function ImportStep2() {
             >
                 <Modal.Header>
                     <Modal.Title>Match importieren: Spieler zuordnen</Modal.Title>
+                    <div className={"text-right"}>
+                        <div>{data ? <Moment format="DD.MM.YYYY HH:mm">{data.match.creationTime}</Moment> : ""}</div>
+                        <div>{data ? moment.duration(data.match.duration).format("m:ss", {trim: false}) : ""}</div>
+                    </div>
                 </Modal.Header>
 
                 <Modal.Body>
-                    {matchData ?
-                        <Match data={matchData} playerMappings={playerMappings} setPlayerMapping={setPlayerMapping}/> :
+                    {data ?
+                        <Match data={data.match} playerMappings={playerMappings} knownPlayers={data.knownPlayers}
+                               setPlayerMapping={setPlayerMapping}/> :
                         <div>Loading...</div>}
                 </Modal.Body>
 
-                <Modal.Footer>
-                    <Button variant="secondary" onClick={() => history.goBack()}>Zurück</Button>
+                <Modal.Footer className={"justify-content-between"}>
+                    <Button variant="secondary" onClick={history.goBack}>Zurück</Button>
                     <Button variant="primary" onClick={importMatch}>Importieren</Button>
                 </Modal.Footer>
             </Modal.Dialog>

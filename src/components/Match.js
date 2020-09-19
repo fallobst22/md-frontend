@@ -2,25 +2,46 @@ import React, {useState} from "react";
 
 import {Col, Container, Row} from "react-bootstrap";
 import Autosuggest from 'react-autosuggest';
-import ChampionImage from "./ChampionImage";
 
 import './Match.css';
+import {ChampionImage, ItemImage, SummonerSpellImage} from "./LolAssets";
+import CustomNumberFormat from "./CustomNumberFormat";
 
 function Match(props) {
+
+    const blueTeamId = props.data.blueTeam.teamId;
+    const redTeamId = props.data.redTeam.teamId;
+
+    const blueTeamPlayers = props.data.participants.filter(participant => participant.team === blueTeamId);
+    const redTeamPlayers = props.data.participants.filter(participant => participant.team === redTeamId);
+
     return (
         <Container fluid>
             <Row>
+                <Col xs={6} className={"team-result team-result-" + (props.data.blueTeam.winner ? "win" : "loss")}>
+                    {props.data.blueTeam.winner ? "Victory" : "Defeat"}
+                </Col>
+                <Col xs={6} className={"team-result team-result-" + (props.data.redTeam.winner ? "win" : "loss")}>
+                    {props.data.redTeam.winner ? "Victory" : "Defeat"}
+                </Col>
+                <Bans blue={props.data.blueTeam.bans} red={props.data.redTeam.bans}/>
                 <Col xs={6} className={"team blueTeam"}>
-                    {props.data.blueTeam.map((participant) => <Player key={participant.participantId} data={participant}
-                                                                      playerMappings={props.playerMappings}
-                                                                      setPlayerMapping={props.setPlayerMapping}
-                                                                      knownPlayers={props.data.knownPlayers}/>)}
+                    {blueTeamPlayers.map((participant) => <Player key={participant.participantId}
+                                                                  data={participant}
+                                                                  playerMappings={props.playerMappings}
+                                                                  setPlayerMapping={props.setPlayerMapping}
+                                                                  knownPlayers={props.knownPlayers}
+                        />
+                    )}
                 </Col>
                 <Col xs={6} className={"team redTeam"}>
-                    {props.data.redTeam.map((participant) => <Player key={participant.participantId} data={participant}
-                                                                     playerMappings={props.playerMappings}
-                                                                     setPlayerMapping={props.setPlayerMapping}
-                                                                     knownPlayers={props.data.knownPlayers}/>)}
+                    {redTeamPlayers.map((participant) => <Player key={participant.participantId}
+                                                                 data={participant}
+                                                                 playerMappings={props.playerMappings}
+                                                                 setPlayerMapping={props.setPlayerMapping}
+                                                                 knownPlayers={props.knownPlayers}
+                        />
+                    )}
                 </Col>
             </Row>
         </Container>
@@ -28,15 +49,39 @@ function Match(props) {
 }
 
 function Player(props) {
+
+    let playernameComponent;
+    if (props.setPlayerMapping) {
+        playernameComponent =
+            <Col className={"playerInputContainer"}>
+                <PlayerInput
+                    playerMappings={props.playerMappings}
+                    participantId={props.data.participantId}
+                    setPlayerMapping={props.setPlayerMapping}
+                    knownPlayers={props.knownPlayers}
+                />
+            </Col>
+    } else {
+        playernameComponent = <Col className={"playerName"}>{props.playerMappings[props.data.participantId]}</Col>;
+    }
+
     return (
-        <Row>
-            <Col xs={2}><ChampionImage championId={props.data.championId}/></Col>
-            <Col className={"playerInputContainer"}><PlayerInput playerMappings={props.playerMappings}
-                                                                 participantId={props.data.participantId}
-                                                                 setPlayerMapping={props.setPlayerMapping}
-                                                                 knownPlayers={props.knownPlayers}/></Col>
-            <Col xs={2}
-                 className={"kda"}>{props.data.stats.kills}/{props.data.stats.deaths}/{props.data.stats.assists}</Col>
+        <Row className={"justify-content-center"}>
+            <Col className={"flex-grow-0 championSpellContainer"}>
+                <ChampionImage championId={props.data.championId}/>
+                <SummonerSpells participant={props.data}/>
+            </Col>
+            <Col>
+                <Row className={"flex-column h-100"}>
+                    {playernameComponent}
+                    <Col
+                        className={"player-stats"}>Gold: <CustomNumberFormat>{props.data.stats.goldEarned}</CustomNumberFormat>,
+                        VS: {props.data.stats.visionScore}</Col>
+                </Row>
+            </Col>
+            <Items items={props.data.items}/>
+            <Col
+                className={"flex-grow-0 kda"}>{props.data.stats.kills}/{props.data.stats.deaths}/{props.data.stats.assists}</Col>
         </Row>
     );
 }
@@ -84,6 +129,42 @@ function PlayerInput(props) {
             renderSuggestion={renderSuggestion}
             inputProps={{value, onChange, placeholder: "Spielernamen eingeben", className: "form-control"}}
         />
+    );
+}
+
+function SummonerSpells(props) {
+
+    return (
+        <div>
+            <SummonerSpellImage className={"summonerSpell"} spellId={props.participant.summonerSpellDId}/>
+            <SummonerSpellImage className={"summonerSpell"} spellId={props.participant.summonerSpellFId}/>
+        </div>
+    );
+}
+
+function Items(props) {
+    return (
+        <Col className={"inventory-container"}>
+            <div className={"item-container"}>
+                {props.items.slice(0, -1).map((item, slot) => <ItemImage key={slot} itemId={item}/>)}
+            </div>
+            <div className={"trinket-container"}>
+                <ItemImage itemId={props.items[props.items.length - 1]}/>
+            </div>
+        </Col>
+    );
+}
+
+function Bans(props) {
+    return (
+        <Col xs={12} className={"bans"}>
+            <div>
+                {props.blue.map(ban => <ChampionImage key={ban} championId={ban}/>)}
+            </div>
+            <div>
+                {props.red.map(ban => <ChampionImage key={ban} championId={ban}/>)}
+            </div>
+        </Col>
     );
 }
 
