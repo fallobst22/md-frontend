@@ -74,9 +74,11 @@ function Player(props) {
             <Col>
                 <Row className={"flex-column h-100"}>
                     {playernameComponent}
-                    <Col
-                        className={"player-stats"}>Gold: <CustomNumberFormat>{props.data.stats.goldEarned}</CustomNumberFormat>,
-                        VS: {props.data.stats.visionScore}</Col>
+                    <Col className={"player-stats"}>
+                        <div>Gold: <CustomNumberFormat>{props.data.stats.goldEarned}</CustomNumberFormat></div>
+                        <div>CS: {props.data.stats.creepScore}</div>
+                        <div>VS: {props.data.stats.visionScore}</div>
+                    </Col>
                 </Row>
             </Col>
             <Items items={props.data.items}/>
