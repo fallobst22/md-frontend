@@ -170,11 +170,14 @@ function PlayerStats(props) {
             .then(res => res.json())
             .then(res => {
                 setData(res);
+                setLoading(false);
             })
             .catch(reason => {
-                alert("Error loading Player Stats: " + reason)
+                //Ignore AbortController.abort()
+                if (reason.name === 'AbortError') return;
+                alert("Error loading Player Stats: " + reason);
+                setLoading(false);
             })
-            .finally(() => setLoading(false));
 
         return () => abortController.abort();
     }, []);
@@ -216,6 +219,8 @@ function PlayerDetails(props) {
                 setData(res);
             })
             .catch(reason => {
+                //Ignore AbortController.abort()
+                if (reason.name === 'AbortError') return;
                 alert("Error loading Player Matches: " + reason)
             })
 

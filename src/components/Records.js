@@ -47,6 +47,8 @@ function Records(props) {
                 setData(res.records);
             })
             .catch(reason => {
+                //Ignore AbortController.abort()
+                if (reason.name === 'AbortError') return;
                 alert("Error loading Records: " + reason)
             });
 

@@ -27,6 +27,8 @@ function MatchView(props) {
                 setData(res);
             })
             .catch(reason => {
+                //Ignore AbortController.abort()
+                if (reason.name === 'AbortError') return;
                 if (reason.message) {
                     alert("Error loading Match Data: " + reason)
                 }
