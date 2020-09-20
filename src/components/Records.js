@@ -36,7 +36,8 @@ function Records(props) {
     });
 
     useEffect(() => {
-        fetch("/api/stats/records")
+        const abortController = new AbortController();
+        fetch("/api/stats/records", {signal: abortController.signal})
             .then((res) => {
                 if (!res.ok) throw Error(res.statusText);
                 return res;
@@ -48,6 +49,8 @@ function Records(props) {
             .catch(reason => {
                 alert("Error loading Records: " + reason)
             });
+
+        return () => abortController.abort();
     }, []);
 
     const breakpoints = [

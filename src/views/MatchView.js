@@ -16,7 +16,8 @@ function MatchView(props) {
     const [keycloak] = useKeycloak();
 
     useEffect(() => {
-        fetch("/api/match/" + id)
+        const abortController = new AbortController();
+        fetch("/api/match/" + id, {signal: abortController.signal})
             .then((res) => {
                 if (!res.ok) throw Error(res.statusText);
                 return res;
@@ -30,6 +31,9 @@ function MatchView(props) {
                     alert("Error loading Match Data: " + reason)
                 }
             })
+
+        return () => abortController.abort();
+
         // We dont want to refetch the match data just because our authentication Token changed, so the hook depends on the token but we dont include it in the dependency list
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [id]);

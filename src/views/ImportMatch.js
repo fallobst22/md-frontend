@@ -83,8 +83,10 @@ function ImportStep2() {
         let headers = new Headers();
         headers.append("Authorization", "Bearer " + keycloak.token);
 
+        const abortController = new AbortController();
         fetch("/api/import/" + matchId, {
-            headers: headers
+            headers: headers,
+            signal: abortController.signal
         }).then((res) => {
             if (res.status === 422) {
                 res.json().then(value => alert("Error: " + value.message));
@@ -102,6 +104,9 @@ function ImportStep2() {
                 }
                 history.push("/import");
             })
+
+        return () => abortController.abort();
+
         // We dont want to refetch the match data just because our authentication Token changed, so the hook depends on the token but we dont include it in the dependency list
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [matchId]);

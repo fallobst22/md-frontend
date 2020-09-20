@@ -161,7 +161,8 @@ function PlayerStats(props) {
     const [data, setData] = useState();
 
     useEffect(() => {
-        fetch("/api/stats/player")
+        const abortController = new AbortController();
+        fetch("/api/stats/player", {signal: abortController.signal})
             .then((res) => {
                 if (!res.ok) throw Error(res.statusText);
                 return res;
@@ -174,6 +175,8 @@ function PlayerStats(props) {
                 alert("Error loading Player Stats: " + reason)
             })
             .finally(() => setLoading(false));
+
+        return () => abortController.abort();
     }, []);
 
     return (
@@ -202,7 +205,8 @@ function PlayerDetails(props) {
     const [data, setData] = useState();
 
     useEffect(() => {
-        fetch("/api/match/player/" + props.data.playerName)
+        const abortController = new AbortController();
+        fetch("/api/match/player/" + props.data.playerName, {signal: abortController.signal})
             .then((res) => {
                 if (!res.ok) throw Error(res.statusText);
                 return res;
@@ -214,6 +218,8 @@ function PlayerDetails(props) {
             .catch(reason => {
                 alert("Error loading Player Matches: " + reason)
             })
+
+        return () => abortController.abort();
     }, [props.data.playerName]);
 
     if (data === undefined) {
