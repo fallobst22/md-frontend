@@ -19,6 +19,8 @@ const titlemappings = {
     assists: "Highest Assists",
     deaths: "Highest Deaths",
     visionScore: "Highest Vision Score",
+    earlyDeath: "Frühester Tod",
+    earlyKill: "Frühester Kill"
 }
 
 const lanemappings = {
