@@ -128,8 +128,7 @@ function RecordEntry(props) {
     return (
         <MatchLink id={props.matchId} className={"d-block text-white"}>
             [{lanemappings[props.lane] || props.lane}]&nbsp;
-            {props.player} auf {props.champion}:&nbsp;
-            {value}
+            {props.player} auf {props.champion}: {value}
         </MatchLink>
     );
 }

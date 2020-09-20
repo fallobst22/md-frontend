@@ -14,11 +14,24 @@
 
 .recordValue {
     font-weight: bold;
+    white-space: nowrap;
 }
 
 .record-card {
     height: 100%;
     margin: 0 1em;
+}
+
+.record-card .card-body a {
+    width: 100%;
+}
+
+.record-card .card-body a {
+    text-align: right;
+}
+
+.record-card .card-body a::first-line {
+    text-align: left;
 }
 
 .record-slider .slick-slide {
