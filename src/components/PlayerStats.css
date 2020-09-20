@@ -85,8 +85,13 @@
 .matchHistoryContainer {
     position: sticky;
     right: 0;
-    width: 100vw !important;
+    width: 99vw !important;
+    padding: 0;
     margin: 0 !important;
+}
+
+.matchHistory {
+    padding: 0 2rem;
 }
 
 .rdt_ExpanderRow {
