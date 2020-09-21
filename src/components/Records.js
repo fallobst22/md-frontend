@@ -20,7 +20,12 @@ const titlemappings = {
     deaths: "Highest Deaths",
     visionScore: "Highest Vision Score",
     earlyDeath: "Frühester Tod",
-    earlyKill: "Frühester Kill"
+    earlyKill: "Frühester Kill",
+    highestkillParticipation: "Highest Killparticipation",
+    lowestkillParticipation: "Lowest Killparticipation",
+    ccTime: "CC Time",
+    killingSpree: "Largest Killingspree",
+    multiKill: "Largest Multikill"
 }
 
 const lanemappings = {
