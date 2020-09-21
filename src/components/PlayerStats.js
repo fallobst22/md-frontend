@@ -84,13 +84,13 @@ const columns = [
         name: "Name",
         selector: "playerName",
         sortable: true,
-        grow: 1.5
+        grow: 1.5,
+        sortFunction: (e1, e2) => e1.playerName.localeCompare(e2.playerName),
     },
     {
         name: "WinRate",
         selector: (data) => data.wins / (data.wins + data.losses),
         sortable: true,
-        sortFunction: (e1, e2) => (e1.wins / (e1.wins + e1.losses)) - (e2.wins / (e2.wins + e2.losses)),
         cell: (data) => <WinrateBar data={data}/>
     },
     {

@@ -117,6 +117,15 @@ function Record(props) {
 }
 
 function RecordEntry(props) {
+    switch (props.type) {
+        case 'PlayerRecord':
+            return <PlayerRecordEntry {...props} />;
+        default:
+            return null;
+    }
+}
+
+function PlayerRecordEntry(props) {
 
     const value =
         <span className={"recordValue"}>
