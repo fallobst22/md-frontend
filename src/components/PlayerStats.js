@@ -94,6 +94,11 @@ const columns = [
         cell: (data) => <WinrateBar data={data}/>
     },
     {
+        name: "Games",
+        selector: (data) => data.wins + data.losses,
+        sortable: true
+    },
+    {
         name: "Wins",
         selector: "wins",
         sortable: true
