@@ -98,3 +98,7 @@
     display: flex;
     justify-content: center;
 }
+
+.provisional-switch {
+    font-size: 0.85rem;
+}

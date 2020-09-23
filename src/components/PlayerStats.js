@@ -7,7 +7,7 @@ import './PlayerStats.css';
 import CustomNumberFormat from "./CustomNumberFormat";
 import WinrateBar from "./WinrateBar";
 import Spinner from "react-bootstrap/Spinner";
-import {Col, Row} from "react-bootstrap";
+import {Col, Form, Row} from "react-bootstrap";
 import Container from "react-bootstrap/Container";
 import {ChampionImage, ItemImage, SummonerSpellImage} from "./LolAssets";
 import Moment from "react-moment";
@@ -159,6 +159,23 @@ const columns = [
 function PlayerStats(props) {
     const [loading, setLoading] = useState(true);
     const [data, setData] = useState();
+    const [showProvisional, setShowProvisional] = useState(false);
+
+    let filteredData = data;
+
+    if (!showProvisional && data) {
+        filteredData = filteredData.filter(entry => (entry.wins + entry.losses) >= 5);
+    }
+
+    const actions = (
+        <Form.Switch
+            id={"provisional-switch"}
+            className={"provisional-switch"}
+            label="Show provisional Standings"
+            checked={showProvisional}
+            onChange={(e) => setShowProvisional(e.target.checked)}
+        />
+    );
 
     useEffect(() => {
         const abortController = new AbortController();
@@ -186,7 +203,7 @@ function PlayerStats(props) {
         <DataTable
             title={"Player Stats"}
             columns={columns}
-            data={data}
+            data={filteredData}
             keyField={"name"}
             responsive={true}
             striped={true}
@@ -200,6 +217,7 @@ function PlayerStats(props) {
             customStyles={customStyles}
             expandableRows
             expandableRowsComponent={<PlayerDetails/>}
+            actions={actions}
         />
     );
 }
