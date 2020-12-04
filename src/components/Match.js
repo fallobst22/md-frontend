@@ -7,6 +7,8 @@ import './Match.css';
 import {ChampionImage, ItemImage, SummonerSpellImage} from "./LolAssets";
 import CustomNumberFormat from "./CustomNumberFormat";
 
+import {VersionContext} from "./version";
+
 function Match(props) {
 
     const blueTeamId = props.data.blueTeam.teamId;
@@ -16,35 +18,37 @@ function Match(props) {
     const redTeamPlayers = props.data.participants.filter(participant => participant.team === redTeamId);
 
     return (
-        <Container fluid>
-            <Row>
-                <Col xs={6} className={"team-result team-result-" + (props.data.blueTeam.winner ? "win" : "loss")}>
-                    {props.data.blueTeam.winner ? "Victory" : "Defeat"}
-                </Col>
-                <Col xs={6} className={"team-result team-result-" + (props.data.redTeam.winner ? "win" : "loss")}>
-                    {props.data.redTeam.winner ? "Victory" : "Defeat"}
-                </Col>
-                <Bans blue={props.data.blueTeam.bans} red={props.data.redTeam.bans}/>
-                <Col xs={6} className={"team blueTeam"}>
-                    {blueTeamPlayers.map((participant) => <Player key={participant.participantId}
-                                                                  data={participant}
-                                                                  playerMappings={props.playerMappings}
-                                                                  setPlayerMapping={props.setPlayerMapping}
-                                                                  knownPlayers={props.knownPlayers}
-                        />
-                    )}
-                </Col>
-                <Col xs={6} className={"team redTeam"}>
-                    {redTeamPlayers.map((participant) => <Player key={participant.participantId}
-                                                                 data={participant}
-                                                                 playerMappings={props.playerMappings}
-                                                                 setPlayerMapping={props.setPlayerMapping}
-                                                                 knownPlayers={props.knownPlayers}
-                        />
-                    )}
-                </Col>
-            </Row>
-        </Container>
+        <VersionContext.Provider value={props.data.version}>
+            <Container fluid>
+                <Row>
+                    <Col xs={6} className={"team-result team-result-" + (props.data.blueTeam.winner ? "win" : "loss")}>
+                        {props.data.blueTeam.winner ? "Victory" : "Defeat"}
+                    </Col>
+                    <Col xs={6} className={"team-result team-result-" + (props.data.redTeam.winner ? "win" : "loss")}>
+                        {props.data.redTeam.winner ? "Victory" : "Defeat"}
+                    </Col>
+                    <Bans blue={props.data.blueTeam.bans} red={props.data.redTeam.bans}/>
+                    <Col xs={6} className={"team blueTeam"}>
+                        {blueTeamPlayers.map((participant) => <Player key={participant.participantId}
+                                                                      data={participant}
+                                                                      playerMappings={props.playerMappings}
+                                                                      setPlayerMapping={props.setPlayerMapping}
+                                                                      knownPlayers={props.knownPlayers}
+                            />
+                        )}
+                    </Col>
+                    <Col xs={6} className={"team redTeam"}>
+                        {redTeamPlayers.map((participant) => <Player key={participant.participantId}
+                                                                     data={participant}
+                                                                     playerMappings={props.playerMappings}
+                                                                     setPlayerMapping={props.setPlayerMapping}
+                                                                     knownPlayers={props.knownPlayers}
+                            />
+                        )}
+                    </Col>
+                </Row>
+            </Container>
+        </VersionContext.Provider>
     );
 }
 

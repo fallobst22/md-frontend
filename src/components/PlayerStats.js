@@ -13,6 +13,7 @@ import {ChampionImage, ItemImage, SummonerSpellImage} from "./LolAssets";
 import Moment from "react-moment";
 import moment from "moment";
 import {useHistory} from "react-router";
+import {VersionContext} from "./version";
 
 createTheme('custom-dark', {
     text: {
@@ -289,33 +290,36 @@ function PlayerMatchEntry(props) {
 
 
     return (
-        <Col xs={12} onClick={onClick} className={"matchHistoryEntry bg-secondary border border-light border-bottom-0"}>
-            <div className={"resultIndicator resultIndicator-" + (data.win ? 'win' : 'loss')}/>
-            <div className={"champion"}>
-                <ChampionImage championId={data.player.championId}/>
-                <div className={"summonerSpells"}>
-                    <SummonerSpellImage className={"summonerSpell"} spellId={data.player.summonerSpellDId}/>
-                    <SummonerSpellImage className={"summonerSpell"} spellId={data.player.summonerSpellFId}/>
+        <VersionContext.Provider value={data.version}>
+            <Col xs={12} onClick={onClick}
+                 className={"matchHistoryEntry bg-secondary border border-light border-bottom-0"}>
+                <div className={"resultIndicator resultIndicator-" + (data.win ? 'win' : 'loss')}/>
+                <div className={"champion"}>
+                    <ChampionImage championId={data.player.championId}/>
+                    <div className={"summonerSpells"}>
+                        <SummonerSpellImage className={"summonerSpell"} spellId={data.player.summonerSpellDId}/>
+                        <SummonerSpellImage className={"summonerSpell"} spellId={data.player.summonerSpellFId}/>
+                    </div>
                 </div>
-            </div>
-            <div className={"championName"}>
-                {data.champion}
-            </div>
-            <div className={"flex-grow-1"}/>
-            <div className={"items"}>
-                {itemSlots.map((item, slot) => <ItemImage key={slot} itemId={item}/>)}
-            </div>
-            <div className={"kda"}>
-                {data.player.stats.kills}/{data.player.stats.deaths}/{data.player.stats.assists}
-            </div>
-            <div className={"gold"}>
-                <CustomNumberFormat>{data.player.stats.goldEarned}</CustomNumberFormat>
-            </div>
-            <div className={"matchTime"}>
-                <div>{<Moment format="DD.MM.YYYY HH:mm">{data.matchCreationTime}</Moment>}</div>
-                <div>{moment.duration(data.matchDuration).format("m:ss", {trim: false})}</div>
-            </div>
-        </Col>
+                <div className={"championName"}>
+                    {data.champion}
+                </div>
+                <div className={"flex-grow-1"}/>
+                <div className={"items"}>
+                    {itemSlots.map((item, slot) => <ItemImage key={slot} itemId={item}/>)}
+                </div>
+                <div className={"kda"}>
+                    {data.player.stats.kills}/{data.player.stats.deaths}/{data.player.stats.assists}
+                </div>
+                <div className={"gold"}>
+                    <CustomNumberFormat>{data.player.stats.goldEarned}</CustomNumberFormat>
+                </div>
+                <div className={"matchTime"}>
+                    <div>{<Moment format="DD.MM.YYYY HH:mm">{data.matchCreationTime}</Moment>}</div>
+                    <div>{moment.duration(data.matchDuration).format("m:ss", {trim: false})}</div>
+                </div>
+            </Col>
+        </VersionContext.Provider>
     );
 }
 
