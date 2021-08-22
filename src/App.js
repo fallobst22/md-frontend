@@ -14,7 +14,7 @@ import MatchView from "./views/MatchView";
 
 function App() {
     return (
-        <ReactKeycloakProvider authClient={keycloak} LoadingComponent={<div/>} initConfig={{
+        <ReactKeycloakProvider authClient={keycloak} LoadingComponent={<div/>} initOptions={{
             onLoad: 'check-sso',
             promiseType: 'native',
             flow: 'standard',
