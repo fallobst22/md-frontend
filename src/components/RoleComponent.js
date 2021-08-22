@@ -1,7 +1,7 @@
 import {useKeycloak} from "@react-keycloak/web";
 
 function RoleComponent(props) {
-    const [keycloak] = useKeycloak();
+    const {keycloak} = useKeycloak();
 
     if (!keycloak.authenticated || !keycloak.tokenParsed.hasOwnProperty('resource_access') || !keycloak.tokenParsed.resource_access.hasOwnProperty('markusdope-backend')) return null;
 

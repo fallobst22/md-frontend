@@ -1,7 +1,7 @@
 import React from 'react';
 import {BrowserRouter as Router, Route, Switch} from "react-router-dom";
 import './App.css';
-import {KeycloakProvider} from "@react-keycloak/web";
+import {ReactKeycloakProvider} from "@react-keycloak/web";
 
 import keycloak from "./keycloak";
 import Footer from "./components/Footer";
@@ -14,7 +14,7 @@ import MatchView from "./views/MatchView";
 
 function App() {
     return (
-        <KeycloakProvider keycloak={keycloak} LoadingComponent={<div/>} initConfig={{
+        <ReactKeycloakProvider authClient={keycloak} LoadingComponent={<div/>} initConfig={{
             onLoad: 'check-sso',
             promiseType: 'native',
             flow: 'standard',
@@ -35,7 +35,7 @@ function App() {
                     <Footer/>
                 </div>
             </Router>
-        </KeycloakProvider>
+        </ReactKeycloakProvider>
     );
 }
 

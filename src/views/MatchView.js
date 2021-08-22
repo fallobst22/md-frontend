@@ -13,7 +13,7 @@ function MatchView(props) {
     const history = useHistory();
     const [data, setData] = useState();
     const {id} = useParams();
-    const [keycloak] = useKeycloak();
+    const {keycloak} = useKeycloak();
 
     useEffect(() => {
         const abortController = new AbortController();

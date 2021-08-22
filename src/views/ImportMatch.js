@@ -74,7 +74,7 @@ function ImportStep1() {
 function ImportStep2() {
     const {matchId} = useParams();
     const history = useHistory();
-    const [keycloak] = useKeycloak();
+    const {keycloak} = useKeycloak();
 
     const [data, setData] = useState(null);
     const [playerMappings, setPlayerMappings] = useState({});

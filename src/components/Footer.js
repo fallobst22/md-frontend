@@ -21,7 +21,7 @@ function Footer() {
 
 function LoginComponent() {
 
-    const [keycloak] = useKeycloak();
+    const {keycloak} = useKeycloak();
 
     if (keycloak.authenticated) {
         return (

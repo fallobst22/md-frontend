@@ -5,7 +5,7 @@ import {useKeycloak} from "@react-keycloak/web";
 function RoleRoute(ownprops) {
     const {component: Component, role, ...props} = ownprops;
 
-    const [keycloak] = useKeycloak();
+    const {keycloak} = useKeycloak();
 
     let allowed = false;
 
