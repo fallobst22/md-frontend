@@ -17,3 +17,7 @@ iframe {
     overflow-x: hidden;
     overflow-y: auto;
 }
+
+.home::-webkit-scrollbar {
+    display: none;
+}

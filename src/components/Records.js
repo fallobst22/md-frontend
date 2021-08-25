@@ -1,4 +1,5 @@
 import React, {useEffect, useState} from "react";
+import { trackPromise, usePromiseTracker } from "react-promise-tracker";
 
 import './Records.css';
 import Card from "react-bootstrap/Card";
@@ -38,83 +39,100 @@ const lanemappings = {
     "MIDDLE": "Midlane",
 }
 
-function Records(props) {
-    const [data, setData] = useState({
-        'Loading...': []
-    });
+const breakpoints = [
+    {
+        breakpoint: 1800,
+        settings: {
+            slidesToShow: 4,
+            slidesToScroll: 4,
+        }
+    },
+    {
+        breakpoint: 1450,
+        settings: {
+            slidesToShow: 3,
+            slidesToScroll: 3
+        }
+    },
+    {
+        breakpoint: 1100,
+        settings: {
+            slidesToShow: 2,
+            slidesToScroll: 2
+        }
+    },
+    {
+        breakpoint: 700,
+        settings: {
+            slidesToShow: 1,
+            slidesToScroll: 1
+        }
+    }
+]
+
+function Records() {
+    const [recordData, setRecordData] = useState({});
+    const {promiseInProgress} = usePromiseTracker({area: 'records'});
 
     useEffect(() => {
         const abortController = new AbortController();
-        fetch("/api/stats/records", {signal: abortController.signal})
-            .then((res) => {
-                if (!res.ok) throw Error(res.statusText);
-                return res;
-            })
-            .then(res => res.json())
-            .then(res => {
-                setData(res.records);
-            })
-            .catch(reason => {
-                //Ignore AbortController.abort()
-                if (reason.name === 'AbortError') return;
-                alert("Error loading Records: " + reason)
-            });
+
+        trackPromise(
+            fetch("/api/stats/records", {signal: abortController.signal})
+                .then((res) => {
+                    if (!res.ok) throw Error(res.statusText);
+                    return res;
+                })
+                .then(res => res.json())
+                .then(res => {
+                    setRecordData(res.records);
+                })
+                .catch(reason => {
+                    //Ignore AbortController.abort()
+                    if (reason.name === 'AbortError') return;
+                    alert("Error loading Records: " + reason)
+                })
+            , 'records'
+        )
 
         return () => abortController.abort();
     }, []);
 
-    const breakpoints = [
-        {
-            breakpoint: 1800,
-            settings: {
-                slidesToShow: 4,
-                slidesToScroll: 4,
-            }
-        },
-        {
-            breakpoint: 1450,
-            settings: {
-                slidesToShow: 3,
-                slidesToScroll: 3
-            }
-        },
-        {
-            breakpoint: 1100,
-            settings: {
-                slidesToShow: 2,
-                slidesToScroll: 2
-            }
-        },
-        {
-            breakpoint: 700,
-            settings: {
-                slidesToShow: 1,
-                slidesToScroll: 1
-            }
-        }
-    ]
-
-    return (
-        <Slider autoplay autoplaySpeed={5000} className={"record-slider"} dots infinite={Object.keys(data).length >= 5}
+    //Display only if Loading or if there actually are records to display
+    return (promiseInProgress || Object.keys(recordData).length > 0) && (
+        <Slider autoplay autoplaySpeed={5000} className={"record-slider"} dots infinite={Object.keys(recordData).length >= 5}
                 slidesToShow={5} slidesToScroll={5} responsive={breakpoints} speed={1000}>
-            {Object.entries(data).map(record => <Record key={record[0]} data={record}/>)}
+            {Object.entries(recordData).map(([key, entries]) => <Record key={key} titleKey={key} entries={entries}/>)}
+            {promiseInProgress &&
+                <LoadingCard />
+            }
         </Slider>
     );
 }
 
+function LoadingCard() {
+    return (
+        <Card className={"record-card"}>
+            <Card.Header>Loading...</Card.Header>
+            <Card.Body className={"text-center"}>
+                <Spinner animation="border" role="status" className={"align-self-center"}>
+                    <span className="sr-only">Loading...</span>
+                </Spinner>
+            </Card.Body>
+            <Card.Footer/>
+        </Card>
+    )
+}
+
 function Record(props) {
-    const [key, record] = props.data;
+    const {titleKey, entries} = props;
 
     return (
         <Card className={"record-card"}>
-            <Card.Header>{titlemappings.hasOwnProperty(key) ? titlemappings[key] : key}</Card.Header>
-            <Card.Body className={record.length ? "" : "text-center"}>
-                {record.length ?
-                    record.map(data => <RecordEntry key={data.matchId + data.player} {...data} />)
-                    :
-                    <Spinner animation="border" role="status">
-                        <span className="sr-only">Loading...</span>
-                    </Spinner>
+            <Card.Header>{titlemappings[titleKey] ?? titleKey}</Card.Header>
+            <Card.Body>
+                {
+                    entries.map(data => <RecordEntry key={data.matchId + data.player} {...data} />)
                 }
             </Card.Body>
             <Card.Footer/>
@@ -123,31 +141,38 @@ function Record(props) {
 }
 
 function RecordEntry(props) {
-    switch (props.type) {
+    const {type, ...data} = props;
+
+    switch (type) {
         case 'PlayerRecord':
-            return <PlayerRecordEntry {...props} />;
+            return <PlayerRecordEntry {...data} />;
         default:
             return null;
     }
 }
 
 function PlayerRecordEntry(props) {
-
-    const value =
-        <span className={"recordValue"}>
-            {isNaN(props.value) ?
-                props.value :
-                <CustomNumberFormat>{props.value}</CustomNumberFormat>
-            }
-        </span>
-    ;
+    const {champion, lane, matchId, player, value} = props;
 
     return (
-        <MatchLink id={props.matchId} className={"d-block text-white"}>
-            [{lanemappings[props.lane] || props.lane}]&nbsp;
-            {props.player} auf {props.champion}: {value}
+        <MatchLink id={matchId} className={"d-block text-white"}>
+            [{lanemappings[lane] ?? lane}]&nbsp;
+            {player} auf {champion}: <RecordValue value={value} />
         </MatchLink>
     );
+}
+
+function RecordValue(props) {
+    const {value} = props;
+
+    return (
+        <span className={"recordValue"}>
+            {isNaN(value) ?
+                value :
+                <CustomNumberFormat>{value}</CustomNumberFormat>
+            }
+        </span>
+    )
 }
 
 export default Records;

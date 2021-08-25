@@ -1,10 +1,10 @@
 .record-slider {
-    margin: 2em 2.5em;
+    margin: 4rem 2.5rem;
 }
 
 @media screen and  (max-width: 420px) {
     .record-slider {
-        margin: 2em 0;
+        margin: 4rem 0;
     }
 }
 
@@ -15,6 +15,7 @@
 .recordValue {
     font-weight: bold;
     white-space: nowrap;
+    float: right;
 }
 
 .record-card {
@@ -22,16 +23,11 @@
     margin: 0 1em;
 }
 
-.record-card .card-body a {
-    width: 100%;
-}
-
-.record-card .card-body a {
-    text-align: right;
-}
-
-.record-card .card-body a::first-line {
-    text-align: left;
+.record-card .card-body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: stretch;
 }
 
 .record-slider .slick-slide {
@@ -39,7 +35,7 @@
 }
 
 .slick-dots {
-    bottom: -2rem !important;
+    bottom: -4rem !important;
 }
 
 .slick-dots li {
@@ -60,4 +56,18 @@
 
 .slick-prev:before, .slick-next:before {
     font-size: 1.5rem !important;
+}
+
+.slick-track
+{
+    display: flex !important;
+}
+
+.slick-slide
+{
+    height: inherit !important;
+}
+
+.slick-slide > div {
+    height: 100%;
 }

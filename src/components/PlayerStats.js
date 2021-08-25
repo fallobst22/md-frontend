@@ -177,7 +177,7 @@ function PlayerStats(props) {
         <Form.Switch
             id={"provisional-switch"}
             className={"provisional-switch"}
-            label="Show provisional Standings"
+            label="Include provisional Rankings"
             checked={showProvisional}
             onChange={(e) => setShowProvisional(e.target.checked)}
         />
@@ -224,6 +224,7 @@ function PlayerStats(props) {
             expandableRows
             expandableRowsComponent={<PlayerDetails/>}
             actions={actions}
+            noDataComponent={<p>There is no data for the choosen filters</p>}
         />
     );
 }
@@ -253,7 +254,7 @@ function PlayerDetails(props) {
 
     if (data === undefined) {
         return (
-            <div className={"playerDetails"}>
+            <div className={"playerDetails-loading"}>
                 <Spinner animation="border" role="status">
                     <span className="sr-only">Loading...</span>
                 </Spinner>
@@ -294,29 +295,31 @@ function PlayerMatchEntry(props) {
             <Col xs={12} onClick={onClick}
                  className={"matchHistoryEntry bg-secondary border border-light border-bottom-0"}>
                 <div className={"resultIndicator resultIndicator-" + (data.win ? 'win' : 'loss')}/>
-                <div className={"champion"}>
-                    <ChampionImage championId={data.player.championId}/>
-                    <div className={"summonerSpells"}>
-                        <SummonerSpellImage className={"summonerSpell"} spellId={data.player.summonerSpellDId}/>
-                        <SummonerSpellImage className={"summonerSpell"} spellId={data.player.summonerSpellFId}/>
+                <div className={"matchHistoryEntryData"}>
+                    <div className={"champion"}>
+                        <ChampionImage championId={data.player.championId}/>
+                        <div className={"summonerSpells"}>
+                            <SummonerSpellImage className={"summonerSpell"} spellId={data.player.summonerSpellDId}/>
+                            <SummonerSpellImage className={"summonerSpell"} spellId={data.player.summonerSpellFId}/>
+                        </div>
                     </div>
-                </div>
-                <div className={"championName"}>
-                    {data.champion}
-                </div>
-                <div className={"flex-grow-1"}/>
-                <div className={"items"}>
-                    {itemSlots.map((item, slot) => <ItemImage key={slot} itemId={item}/>)}
-                </div>
-                <div className={"kda"}>
-                    {data.player.stats.kills}/{data.player.stats.deaths}/{data.player.stats.assists}
-                </div>
-                <div className={"gold"}>
-                    <CustomNumberFormat>{data.player.stats.goldEarned}</CustomNumberFormat>
-                </div>
-                <div className={"matchTime"}>
-                    <div>{<Moment format="DD.MM.YYYY HH:mm">{data.matchCreationTime}</Moment>}</div>
-                    <div>{moment.duration(data.matchDuration).format("m:ss", {trim: false})}</div>
+                    <div className={"championName"}>
+                        {data.champion}
+                    </div>
+                    <div className={"flex-grow-1"}/>
+                    <div className={"items"}>
+                        {itemSlots.map((item, slot) => <ItemImage key={slot} itemId={item}/>)}
+                    </div>
+                    <div className={"kda"}>
+                        {data.player.stats.kills}/{data.player.stats.deaths}/{data.player.stats.assists}
+                    </div>
+                    <div className={"gold"}>
+                        <CustomNumberFormat>{data.player.stats.goldEarned}</CustomNumberFormat>
+                    </div>
+                    <div className={"matchTime"}>
+                        <div>{<Moment format="DD.MM.YYYY HH:mm">{data.matchCreationTime}</Moment>}</div>
+                        <div>{moment.duration(data.matchDuration).format("m:ss", {trim: false})}</div>
+                    </div>
                 </div>
             </Col>
         </VersionContext.Provider>
