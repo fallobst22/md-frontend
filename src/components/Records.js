@@ -10,6 +10,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Spinner from "react-bootstrap/Spinner";
 import MatchLink from "./MatchLink";
+import {useSeason} from "./season";
 
 const titlemappings = {
     loading: "Loading...",
@@ -73,12 +74,13 @@ const breakpoints = [
 function Records() {
     const [recordData, setRecordData] = useState({});
     const {promiseInProgress} = usePromiseTracker({area: 'records'});
+    const season = useSeason();
 
     useEffect(() => {
         const abortController = new AbortController();
 
         trackPromise(
-            fetch("/api/stats/records", {signal: abortController.signal})
+            fetch(`/api/stats/records/${season}`, {signal: abortController.signal})
                 .then((res) => {
                     if (!res.ok) throw Error(res.statusText);
                     return res;
@@ -96,15 +98,16 @@ function Records() {
         )
 
         return () => abortController.abort();
-    }, []);
+    }, [season]);
 
     //Display only if Loading or if there actually are records to display
     return (promiseInProgress || Object.keys(recordData).length > 0) && (
-        <Slider autoplay autoplaySpeed={5000} className={"record-slider"} dots infinite={Object.keys(recordData).length >= 5}
+        <Slider autoplay autoplaySpeed={5000} className={"record-slider"} dots infinite={!promiseInProgress && Object.keys(recordData).length >= 5}
                 slidesToShow={5} slidesToScroll={5} responsive={breakpoints} speed={1000}>
-            {Object.entries(recordData).map(([key, entries]) => <Record key={key} titleKey={key} entries={entries}/>)}
-            {promiseInProgress &&
+            {promiseInProgress ?
                 <LoadingCard />
+                :
+                Object.entries(recordData).map(([key, entries]) => <Record key={key} titleKey={key} entries={entries}/>)
             }
         </Slider>
     );

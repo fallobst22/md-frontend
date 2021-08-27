@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 
 import '../views/Home.css';
 import DataTable, {createTheme} from "react-data-table-component";
@@ -14,6 +14,8 @@ import Moment from "react-moment";
 import moment from "moment";
 import {useHistory} from "react-router";
 import {VersionContext} from "./version";
+import {SeasonContext, useSeason} from "./season";
+import {trackPromise, usePromiseTracker} from "react-promise-tracker";
 
 createTheme('custom-dark', {
     text: {
@@ -163,53 +165,48 @@ const columns = [
 ]
 
 function PlayerStats(props) {
-    const [loading, setLoading] = useState(true);
+    const {promiseInProgress: statsLoading} = usePromiseTracker({area: 'playerstats'});
+    const {promiseInProgress: seasonLoading} = usePromiseTracker({area: 'season'});
     const [data, setData] = useState();
     const [showProvisional, setShowProvisional] = useState(false);
+    const {season, currentSeason, setSeason} = useContext(SeasonContext);
+    const [selectedSeason, setSelectedSeason] = useState(undefined);
 
-    let filteredData = data;
+    //Set the selected Season to the current, if there currently is none selected, and ther is a current Season known
+    if(selectedSeason === undefined && currentSeason !== undefined) setSelectedSeason(currentSeason);
 
-    if (!showProvisional && data) {
-        filteredData = filteredData.filter(entry => (entry.wins + entry.losses) >= 5);
-    }
-
-    const actions = (
-        <Form.Switch
-            id={"provisional-switch"}
-            className={"provisional-switch"}
-            label="Include provisional Rankings"
-            checked={showProvisional}
-            onChange={(e) => setShowProvisional(e.target.checked)}
-        />
-    );
+    const filteredData = data?.filter(entry => (entry.wins + entry.losses) >= 5);
 
     useEffect(() => {
         const abortController = new AbortController();
-        fetch("/api/stats/player", {signal: abortController.signal})
-            .then((res) => {
-                if (!res.ok) throw Error(res.statusText);
-                return res;
-            })
-            .then(res => res.json())
-            .then(res => {
-                setData(res);
-                setLoading(false);
-            })
-            .catch(reason => {
-                //Ignore AbortController.abort()
-                if (reason.name === 'AbortError') return;
-                alert("Error loading Player Stats: " + reason);
-                setLoading(false);
-            })
+        trackPromise(
+            fetch(`/api/stats/player/${season}`, {signal: abortController.signal})
+                .then((res) => {
+                    if (!res.ok) throw Error(res.statusText);
+                    return res;
+                })
+                .then(res => res.json())
+                .then(res => {
+                    setData(res);
+                    //If there is no non provisional Data, show the provisional
+                    if(res.filter(entry => (entry.wins + entry.losses) >= 5).length === 0) setShowProvisional(true);
+                })
+                .catch(reason => {
+                    //Ignore AbortController.abort()
+                    if (reason.name === 'AbortError') return;
+                    alert("Error loading Player Stats: " + reason);
+                })
+            , 'playerstats'
+        );
 
         return () => abortController.abort();
-    }, []);
+    }, [season]);
 
     return (
         <DataTable
             title={"Player Stats"}
             columns={columns}
-            data={filteredData}
+            data={showProvisional ? data : filteredData}
             keyField={"name"}
             responsive={true}
             striped={true}
@@ -217,13 +214,43 @@ function PlayerStats(props) {
             persistTableHead={true}
             defaultSortField={"playerName"}
             highlightOnHover={true}
-            progressPending={loading}
+            progressPending={statsLoading}
             theme={"custom-dark"}
             className={props.className}
             customStyles={customStyles}
             expandableRows
             expandableRowsComponent={<PlayerDetails/>}
-            actions={actions}
+            actions={
+                <Form inline>
+                    <Form.Switch
+                        id={"provisional-switch"}
+                        className={"provisional-switch"}
+                        label="Include provisional Rankings"
+                        checked={showProvisional}
+                        onChange={(e) => setShowProvisional(e.target.checked)}
+                    />
+                    <Form.Control
+                        id="seasonSelect"
+                        as="select"
+                        custom
+                        className="ml-4"
+                        onChange={(e) => {
+                            setSeason(e.target.value);
+                            setSelectedSeason(e.target.value);
+                        }}
+                        value={selectedSeason}
+                    >
+                        {seasonLoading ?
+                            <option>Loading...</option>
+                            :
+                            <React.Fragment>
+                                <option value={0}>All Seasons</option>
+                                {[...Array(currentSeason).keys()].map(season => <option key={season} value={season+1}>Season {season+1}</option>)}
+                            </React.Fragment>
+                        }
+                    </Form.Control>
+                </Form>
+            }
             noDataComponent={<p>There is no data for the choosen filters</p>}
         />
     );
@@ -231,10 +258,11 @@ function PlayerStats(props) {
 
 function PlayerDetails(props) {
     const [data, setData] = useState();
+    const season = useSeason();
 
     useEffect(() => {
         const abortController = new AbortController();
-        fetch("/api/match/player/" + props.data.playerName, {signal: abortController.signal})
+        fetch(`/api/match/player/${props.data.playerName}/${season}`, {signal: abortController.signal})
             .then((res) => {
                 if (!res.ok) throw Error(res.statusText);
                 return res;
@@ -250,7 +278,7 @@ function PlayerDetails(props) {
             })
 
         return () => abortController.abort();
-    }, [props.data.playerName]);
+    }, [props.data.playerName, season]);
 
     if (data === undefined) {
         return (

@@ -9,7 +9,7 @@ import RoleComponent from "../components/RoleComponent";
 import Moment from "react-moment";
 import moment from "moment";
 
-function MatchView(props) {
+function MatchView() {
     const history = useHistory();
     const [data, setData] = useState();
     const {id} = useParams();
@@ -50,7 +50,7 @@ function MatchView(props) {
         }).then((res) => {
             if (!res.ok) throw Error(res.statusText);
             return res;
-        }).then(value => {
+        }).then(_ => {
             alert("Match erfolgreich gelöscht");
             history.push("/");
         })
@@ -66,7 +66,10 @@ function MatchView(props) {
                 size={"xl"}
             >
                 <Modal.Header className={"d-flex justify-content-between"}>
-                    <Modal.Title>Match {id}</Modal.Title>
+                    <div>
+                        <Modal.Title>Match {id}</Modal.Title>
+                        <div>{data ? `Markus Dope Season ${data.season}` : ""}</div>
+                    </div>
                     <div className={"text-right"}>
                         <div>{data ? <Moment format="DD.MM.YYYY HH:mm">{data.match.creationTime}</Moment> : ""}</div>
                         <div>{data ? moment.duration(data.match.duration).format("m:ss", {trim: false}) : ""}</div>
