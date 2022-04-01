@@ -8,7 +8,7 @@
     "moment": "^2.29.1",
     "moment-duration-format": "^2.3.2",
     "react": "^17.0.2",
-    "react-app-polyfill": "^2.0.0",
+    "react-app-polyfill": "^3.0.0",
     "react-autosuggest": "^10.1.0",
     "react-bootstrap": "^1.6.1",
     "react-cookie-consent": "^7.3.1",
