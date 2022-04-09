@@ -16,6 +16,15 @@
     {
       "matchPackageNames": ["react-bootstrap"],
       "allowedVersions": "<2.0.0"
+    },
+    {
+      "matchPackageNames": [
+        "react",
+        "react-dom",
+        "@types/react",
+        "@types/react-dom"
+      ],
+      "allowedVersions": "<18.0.0"
     }
   ]
 }
