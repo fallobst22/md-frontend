@@ -12,6 +12,10 @@
         "react-router-bootstrap"
       ],
       "allowedVersions": "<0.26.0"
+    },
+    {
+      "matchPackageNames": ["react-bootstrap"],
+      "allowedVersions": "<2.0.0"
     }
   ]
 }
