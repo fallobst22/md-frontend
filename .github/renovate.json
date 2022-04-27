@@ -25,6 +25,12 @@
         "@types/react-dom"
       ],
       "allowedVersions": "<18.0.0"
+    },
+    {
+      "matchPackageNames": [
+        "react-data-table-component"
+      ],
+      "allowedVersions": "<7.0.0"
     }
   ]
 }
