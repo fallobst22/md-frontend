@@ -28,6 +28,12 @@
     },
     {
       "matchPackageNames": [
+        "@testing-library/react"
+      ],
+      "allowedVersions": "<13.0.0"
+    },
+    {
+      "matchPackageNames": [
         "react-data-table-component"
       ],
       "allowedVersions": "<7.0.0"
